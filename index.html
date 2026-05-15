@@ -1186,9 +1186,11 @@
             <span data-zh="住在你楼下的小周" data-en="住在你楼下的小周"></span>
           </a>
           <a class="social-item" href="https://xhslink.com/m/9hhK897vJQX" target="_blank" rel="noopener noreferrer">
-            <div class="social-badge social-badge--xhs">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-label="小红书"><path d="M19.07 3.17H4.93C3.87 3.17 3 4.04 3 5.1v13.8c0 1.06.87 1.93 1.93 1.93h14.14c1.06 0 1.93-.87 1.93-1.93V5.1c0-1.06-.87-1.93-1.93-1.93zm-3.56 9.38h-2.34v2.34h-2.34v-2.34H8.49V10.2h2.34V7.86h2.34V10.2h2.34v2.35z"/></svg>
-            </div>
+            <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;border-radius:7px;display:block;flex-shrink:0;" aria-label="小红书">
+              <rect width="56" height="56" fill="#FF2442"/>
+              <text x="28" y="22" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif" font-size="15" font-weight="700" fill="#fff">小红</text>
+              <text x="28" y="41" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif" font-size="15" font-weight="700" fill="#fff">书</text>
+            </svg>
             <span data-zh="小周去拍照" data-en="小周去拍照"></span>
           </a>
           <a class="social-item" href="https://www.instagram.com/huntzchou/" target="_blank" rel="noopener noreferrer">
@@ -1873,9 +1875,11 @@
       tile.className = 'pf-img pf-link-tile';
       const label = isZh ? data.linkTile.labelZh : data.linkTile.labelEn;
       tile.innerHTML = `
-        <div style="width:52px;height:52px;border-radius:13px;background:#FF2442;display:flex;align-items:center;justify-content:center;">
-          <svg style="width:30px;height:30px;fill:#fff;" viewBox="0 0 24 24"><path d="M19.07 3.17H4.93C3.87 3.17 3 4.04 3 5.1v13.8c0 1.06.87 1.93 1.93 1.93h14.14c1.06 0 1.93-.87 1.93-1.93V5.1c0-1.06-.87-1.93-1.93-1.93zm-3.56 9.38h-2.34v2.34h-2.34v-2.34H8.49V10.2h2.34V7.86h2.34V10.2h2.34v2.35z"/></svg>
-        </div>
+        <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" style="width:52px;height:52px;border-radius:13px;display:block;flex-shrink:0;">
+          <rect width="56" height="56" fill="#FF2442"/>
+          <text x="28" y="22" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif" font-size="15" font-weight="700" fill="#fff">小红</text>
+          <text x="28" y="41" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif" font-size="15" font-weight="700" fill="#fff">书</text>
+        </svg>
         <div class="pf-lt-label">${label.replace(/\n/g,'<br>')}</div>
         <div class="pf-lt-arrow">↗</div>
       `;
