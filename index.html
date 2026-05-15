@@ -488,6 +488,20 @@
       margin-top: 1.4rem;
       letter-spacing: .06em;
     }
+    .proj-video-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: .62rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid rgba(196,168,122,.3);
+      padding-bottom: .1rem;
+      transition: color .3s, border-color .3s;
+      position: relative;
+      z-index: 2;
+    }
+    .proj-video-link:hover { color: var(--gold2); border-color: var(--gold2); }
 
     /* ─── AWARDS ─────────────────────────────────────────────── */
     .awards-list { display: flex; flex-direction: column; }
@@ -1154,6 +1168,25 @@
 
     <div class="exp-list">
 
+      <!-- 香港理工大学知识转移及创业处 → no portfolio -->
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-period">2026.01 — 2026.07</div>
+          <div class="exp-org" data-zh="香港理工大学知识转移及创业处" data-en="PolyU Knowledge Transfer & Entrepreneurship Office"></div>
+        </div>
+        <div>
+          <div class="exp-role" data-zh="项目助理" data-en="Project Assistant"></div>
+          <div class="exp-desc"
+            data-zh="负责部门会议及各类活动的全程摄影记录，产出高质量影像素材以支撑活动宣传与存档需求。深度参与活动策划流程，协助制定方案与执行细节，结合新媒体运营经验为内容创意呈现提供支持。统筹会场布置与场地陈设规划，确保活动环境符合品牌视觉要求。高效落实各项日常任务，展现出良好的执行力与跨部门协作意识。"
+            data-en="Responsible for full-event photography documentation for departmental meetings and activities, producing high-quality visual assets for promotion and archiving. Participated in event planning, assisting in drafting proposals and execution details, leveraging new media experience to support creative content presentation. Coordinated venue setup to ensure brand-aligned visual environments. Efficiently executed daily tasks with strong cross-departmental collaboration."></div>
+          <div class="tags">
+            <span class="tag" data-zh="活动摄影" data-en="Event Photography"></span>
+            <span class="tag" data-zh="活动策划" data-en="Event Planning"></span>
+            <span class="tag" data-zh="内容产出" data-en="Content Production"></span>
+          </div>
+        </div>
+      </div>
+
       <!-- 澳门莲花卫视 → external link -->
       <div class="exp-item reveal has-portfolio"
            data-portfolio-type="link"
@@ -1342,7 +1375,7 @@
         <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
       </div>
 
-      <!-- 08 央视科教频道 — has work -->
+      <!-- 08 央视科教频道 — has work + video link -->
       <div class="proj-card reveal has-work" data-portfolio-key="cctv">
         <div class="proj-num">08</div>
         <div class="proj-title" data-zh="央视科教频道《地理·中国》" data-en="CCTV Science & Education · Geography China"></div>
@@ -1350,12 +1383,18 @@
         <div class="proj-desc"
           data-zh="参与《奇特古城之谜·火山石城3》节目摄制，深入积累专业纪录片制作经验。"
           data-en="Participated in 'Mystery of Ancient Cities · Volcanic Stone City 3', gaining hands-on professional documentary filmmaking experience."></div>
-        <div class="proj-date">—</div>
+        <div class="proj-date">2024.02</div>
+        <a class="proj-video-link"
+           href="https://tv.cctv.com/2024/06/21/VIDEuc0Q2gnmAG41qPYHzU5A240621.shtml"
+           target="_blank" rel="noopener noreferrer"
+           data-zh="观看节目 ↗" data-en="Watch Episode ↗"></a>
         <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
       </div>
 
-      <!-- 09 Echobox — no work -->
-      <div class="proj-card reveal">
+      <!-- 09 Echobox — business plan PDF -->
+      <div class="proj-card reveal has-work"
+           data-portfolio-type="link"
+           data-portfolio-href="assets/echobox-business-plan.pdf">
         <div class="proj-num">09</div>
         <div class="proj-title" data-zh="Echobox — 跨代际智能沟通平台" data-en="Echobox — Cross-generational AI Chat Platform"></div>
         <div class="proj-role" data-zh="设计师 · 联合创始人" data-en="Designer · Co-founder"></div>
@@ -1363,6 +1402,7 @@
           data-zh="一款 AI 驱动的智能聊天软件，帮助年轻人与长辈跨越代沟、建立更顺畅的情感连接与沟通桥梁。入围香港理工大学 2025 年微型基金第一期最佳表现奖，获创业奖金 2 万港元，并进入香港科技园ideation计划。"
           data-en="An AI-powered intelligent chat platform designed to bridge the generation gap between young people and elders, fostering smoother emotional connection and communication across generations. Shortlisted for PolyU 2025 Micro Fund Best Performance Award with HKD 20,000 prize, and entering the ideation program of Hong Kong Science and Technology Park."></div>
         <div class="proj-date">2025</div>
+        <div class="pf-hint" data-zh="查看商业计划书 ↗" data-en="View Business Plan ↗"></div>
       </div>
 
     </div>
@@ -1800,8 +1840,16 @@
   });
 
   /* ── Project card clicks ── */
-  document.querySelectorAll('.proj-card.has-work[data-portfolio-key]').forEach(card => {
-    card.addEventListener('click', () => openPortfolio(card.dataset.portfolioKey));
+  document.querySelectorAll('.proj-card.has-work').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.proj-video-link')) return;
+      const type = card.dataset.portfolioType;
+      if (type === 'link') {
+        window.open(card.dataset.portfolioHref, '_blank', 'noopener,noreferrer');
+      } else if (card.dataset.portfolioKey) {
+        openPortfolio(card.dataset.portfolioKey);
+      }
+    });
   });
 
   /* ── Lightbox ── */
