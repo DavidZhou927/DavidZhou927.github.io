@@ -78,6 +78,7 @@
       align-items: flex-start;
       gap: 2.5rem;
       margin-bottom: 4rem;
+      position: relative;
     }
     .sec-num {
       font-size: .65rem;
@@ -85,12 +86,16 @@
       letter-spacing: .18em;
       padding-top: .5rem;
       min-width: 2rem;
+      position: relative;
+      z-index: 1;
     }
     .sec-title {
       font-size: clamp(2rem, 4vw, 3.6rem);
       font-weight: 300;
       color: var(--white);
       line-height: 1;
+      position: relative;
+      z-index: 1;
     }
 
     /* ─── NAV ────────────────────────────────────────────────── */
@@ -527,18 +532,23 @@
       margin-top: 1.4rem;
       letter-spacing: .06em;
     }
-    .proj-video-link {
-      display: inline-block;
-      margin-top: 1rem;
-      font-size: .62rem;
+    .pf-header-actions { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+    .pf-video-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: 0 1.1rem;
+      height: 40px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: .68rem;
       letter-spacing: .15em;
       text-transform: uppercase;
-      color: var(--gold);
-      transition: color .3s;
-      position: relative;
-      z-index: 2;
+      font-family: var(--f-en);
+      transition: background .3s, color .3s;
+      white-space: nowrap;
     }
-    .proj-video-link:hover { color: var(--gold2); border-color: var(--gold2); }
+    .pf-video-btn:hover { background: var(--gold); color: var(--bg); }
 
     /* ─── AWARDS ─────────────────────────────────────────────── */
     .awards-list { display: flex; flex-direction: column; }
@@ -1067,9 +1077,168 @@
       .pf-grid .pf-img:first-child { grid-column: 1 !important; grid-row: 1 !important; }
       .exp-item.has-portfolio:hover { padding-left: 0; }
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       DEPTH & MOTION LAYER — added for richer, less-flat design
+       ═══════════════════════════════════════════════════════════ */
+
+    /* ── Film grain / texture overlay ── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      pointer-events: none;
+      opacity: .045;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    /* ── Ambient vignette for depth ── */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 90% 80% at 50% 35%, transparent 55%, rgba(4,7,14,.55) 100%);
+    }
+
+    /* ── Custom cursor ── */
+    .cursor-dot, .cursor-ring {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+    }
+    .cursor-dot {
+      width: 6px; height: 6px;
+      margin: -3px 0 0 -3px;
+      background: var(--gold2);
+    }
+    .cursor-ring {
+      width: 34px; height: 34px;
+      margin: -17px 0 0 -17px;
+      border: 1px solid rgba(196,168,122,.55);
+      transition: width .3s var(--ease-out), height .3s var(--ease-out),
+                  margin .3s var(--ease-out), background .3s, border-color .3s;
+    }
+    body.cursor-hover .cursor-ring {
+      width: 56px; height: 56px;
+      margin: -28px 0 0 -28px;
+      background: rgba(196,168,122,.07);
+      border-color: var(--gold);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button, .proj-card.has-work, .exp-item.has-portfolio,
+      .pf-img, .social-item, .lang-btn, .burger { cursor: none; }
+      .cursor-dot, .cursor-ring { display: block; }
+    }
+
+    /* ── Cursor-following image preview (project / gallery hover) ── */
+    .hover-preview {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 350;
+      width: 290px; height: 360px;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.92) rotate(-2deg);
+      transition: opacity .45s var(--ease-out), transform .55s var(--ease-out);
+      border: 1px solid var(--border2);
+      box-shadow: 0 30px 80px rgba(0,0,0,.6);
+      will-change: left, top, transform, opacity;
+    }
+    .hover-preview.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+    .hover-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(.92);
+    }
+    .hover-preview::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(196,168,122,.25);
+    }
+    @media (hover: none), (pointer: coarse) {
+      .hover-preview { display: none; }
+    }
+
+    /* ── Giant ghost section numbers (graphic typography) ── */
+    .sec-ghost {
+      position: absolute;
+      top: 50%; right: 0;
+      transform: translateY(-50%);
+      font-family: var(--f-en);
+      font-size: clamp(7rem, 17vw, 15rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(196,168,122,.08);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    @media (max-width: 600px) { .sec-ghost { font-size: 7rem; opacity: .6; } }
+
+    /* ── Hero parallax helpers ── */
+    .hero-portrait img { will-change: transform; }
+    .hero-glow { will-change: transform; }
+
+    /* ── Richer scroll reveal (blur + deeper travel) ── */
+    .reveal {
+      transform: translateY(30px);
+      filter: blur(6px);
+      transition: opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out);
+    }
+    .reveal.in { filter: blur(0); }
+    .reveal-left {
+      transform: translateX(-24px);
+      filter: blur(6px);
+      transition: opacity .8s var(--ease-out), transform .8s var(--ease-out), filter .8s var(--ease-out);
+    }
+    .reveal-left.in { filter: blur(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left { filter: none; transform: none; }
+    }
+
+    /* ── Project card depth on hover ── */
+    .proj-card {
+      transition: background .4s var(--ease), transform .45s var(--ease-out), box-shadow .45s var(--ease-out);
+    }
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .55s var(--ease-out);
+      z-index: 3;
+    }
+    .proj-card.has-work:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 55px rgba(0,0,0,.45);
+      z-index: 2;
+    }
+    .proj-card.has-work:hover::before { transform: scaleX(1); }
   </style>
 </head>
 <body class="zh">
+
+<!-- depth & motion layers -->
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="hover-preview" id="hoverPreview" aria-hidden="true"><img id="hoverPreviewImg" src="" alt="" /></div>
 
 <!-- ══════════════════════ NAV ══════════════════════ -->
 <nav id="nav">
@@ -1434,10 +1603,6 @@
           data-zh="参与《奇特古城之谜·火山石城3》节目摄制，深入积累专业纪录片制作经验。"
           data-en="Participated in 'Mystery of Ancient Cities · Volcanic Stone City 3', gaining hands-on professional documentary filmmaking experience."></div>
         <div class="proj-date">2024.02</div>
-        <a class="proj-video-link"
-           href="https://tv.cctv.com/2024/06/21/VIDEuc0Q2gnmAG41qPYHzU5A240621.shtml"
-           target="_blank" rel="noopener noreferrer"
-           data-zh="观看节目" data-en="Watch Episode"></a>
         <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
       </div>
 
@@ -1652,7 +1817,10 @@
       <div class="pf-header-eyebrow" id="pfEyebrow">Portfolio</div>
       <div class="pf-header-title" id="pfTitle"></div>
     </div>
-    <button class="pf-close" id="pfClose" aria-label="Close">✕</button>
+    <div class="pf-header-actions">
+      <a class="pf-video-btn" id="pfVideoLink" target="_blank" rel="noopener noreferrer" style="display:none;"></a>
+      <button class="pf-close" id="pfClose" aria-label="Close">✕</button>
+    </div>
   </div>
   <div class="pf-body">
     <div class="pf-grid" id="pfGrid"></div>
@@ -1754,6 +1922,7 @@
     cctv: {
       path: 'assets/proj/cctv/',
       files: ['DSC07969.jpg','DSC07989.jpg','DSC08006.jpg','DSC08007.jpg','DSC08008.jpg','DSC08039.jpg','DSC08041.jpg','DSC08053-已增强-降噪.jpg'],
+      videoHref: 'https://tv.cctv.com/2024/06/21/VIDEuc0Q2gnmAG41qPYHzU5A240621.shtml',
       titleZh: '央视科教频道《地理·中国》',
       titleEn: 'CCTV Science & Education · Geography China',
       roleZh: '摄像助理',
@@ -1833,6 +2002,7 @@
   const pfEyebrow      = document.getElementById('pfEyebrow');
   const pfFooter       = document.getElementById('pfFooter');
   const pfClose        = document.getElementById('pfClose');
+  const pfVideoLink    = document.getElementById('pfVideoLink');
   const pfTitleOverlay = document.getElementById('pfTitleOverlay');
   const ptoTitle       = document.getElementById('ptoTitle');
   const ptoRole        = document.getElementById('ptoRole');
@@ -1847,6 +2017,13 @@
 
     pfEyebrow.textContent = isZh ? '作品集' : 'Portfolio';
     pfTitle.textContent   = title;
+    if (data.videoHref) {
+      pfVideoLink.href = data.videoHref;
+      pfVideoLink.textContent = isZh ? '观看节目 ↗' : 'Watch Episode ↗';
+      pfVideoLink.style.display = '';
+    } else {
+      pfVideoLink.style.display = 'none';
+    }
     ptoTitle.textContent  = title;
     ptoRole.textContent   = role;
 
@@ -1913,7 +2090,6 @@
   /* ── Project card clicks ── */
   document.querySelectorAll('.proj-card.has-work').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.proj-video-link')) return;
       const type = card.dataset.portfolioType;
       if (type === 'link') {
         window.open(card.dataset.portfolioHref, '_blank', 'noopener,noreferrer');
@@ -1975,6 +2151,98 @@
     }
     if (pfOverlay.classList.contains('open') && e.key === 'Escape') closePortfolio();
   });
+
+  /* ═══════════════════════════════════════════════════════════
+     DEPTH & MOTION LAYER
+     ═══════════════════════════════════════════════════════════ */
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ── Giant ghost section numbers ── */
+  document.querySelectorAll('.sec-hd').forEach(hd => {
+    const num = hd.querySelector('.sec-num');
+    if (!num) return;
+    const ghost = document.createElement('span');
+    ghost.className = 'sec-ghost';
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.textContent = num.textContent.trim();
+    hd.appendChild(ghost);
+  });
+
+  /* ── Custom cursor ── */
+  if (finePointer) {
+    const dot  = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+
+    window.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px)`;
+    });
+    (function ringLoop() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      requestAnimationFrame(ringLoop);
+    })();
+
+    document.querySelectorAll('a, button, .proj-card.has-work, .exp-item.has-portfolio, .pf-img, .social-item, .lang-btn, .burger')
+      .forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+  }
+
+  /* ── Cursor-following image preview ── */
+  if (finePointer) {
+    const hp    = document.getElementById('hoverPreview');
+    const hpImg = document.getElementById('hoverPreviewImg');
+    let px = 0, py = 0, cx = 0, cy = 0, active = false;
+
+    const bindPreview = (el, key) => {
+      const data = pfData[key];
+      if (!data || !data.files || !data.files.length) return;
+      el.addEventListener('mouseenter', () => {
+        hpImg.src = data.path + encodeURIComponent(data.files[0]);
+        hp.classList.add('show');
+        active = true;
+      });
+      el.addEventListener('mouseleave', () => {
+        hp.classList.remove('show');
+        active = false;
+      });
+    };
+
+    document.querySelectorAll('.proj-card.has-work[data-portfolio-key]')
+      .forEach(c => bindPreview(c, c.dataset.portfolioKey));
+    document.querySelectorAll('.exp-item.has-portfolio[data-portfolio-type="gallery"]')
+      .forEach(it => bindPreview(it, it.dataset.portfolioKey));
+
+    window.addEventListener('mousemove', (e) => { px = e.clientX; py = e.clientY; });
+    (function previewLoop() {
+      cx += (px - cx) * 0.12;
+      cy += (py - cy) * 0.12;
+      if (active) { hp.style.left = cx + 'px'; hp.style.top = cy + 'px'; }
+      requestAnimationFrame(previewLoop);
+    })();
+  }
+
+  /* ── Hero parallax ── */
+  const heroImg  = document.querySelector('.hero-portrait img');
+  const heroGlow = document.querySelector('.hero-glow');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    const parallax = () => {
+      const y = window.scrollY;
+      if (y < innerHeight * 1.2) {
+        if (heroImg)  heroImg.style.transform  = `translateY(${y * 0.06}px) scale(1.12)`;
+        if (heroGlow) heroGlow.style.transform = `translateY(${y * 0.2}px)`;
+      }
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(parallax); ticking = true; }
+    }, { passive: true });
+  }
 </script>
 </body>
 </html>
