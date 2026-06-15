@@ -650,6 +650,20 @@
       border-radius: var(--r-lg);
     }
     .pub-card:first-of-type { margin-top: 5rem; }
+    /* two photobooks side by side */
+    .pub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 5rem;
+    }
+    .pub-grid .pub-card {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 0;
+    }
+    .pub-grid .pub-card:first-of-type { margin-top: 0; }
+    .pub-grid .pub-visual { order: -1; }
     .pub-eyebrow { margin-bottom: 1rem; }
     .pub-title {
       font-size: clamp(1.6rem,3vw,2.4rem);
@@ -1153,6 +1167,7 @@
       .about-grid    { grid-template-columns: 1fr; gap: 3.5rem; }
       .contact-grid  { grid-template-columns: 1fr; gap: 3rem; }
       .pub-card      { grid-template-columns: 1fr; gap: 2rem; }
+      .pub-grid      { grid-template-columns: 1fr; gap: 2.4rem; }
       .proj-row      { grid-template-columns: 1fr; gap: 1.4rem; }
       .proj-row .proj-thumb { order: 0 !important; height: clamp(200px, 52vw, 300px); }
       .proj-row .proj-info  { order: 1 !important; }
@@ -1783,7 +1798,8 @@
       <!-- 09 Echobox — business plan PDF -->
       <article class="proj-row reveal has-work"
            data-portfolio-type="link"
-           data-portfolio-href="assets/echobox-business-plan.pdf">
+           data-portfolio-href="assets/echobox-business-plan.pdf"
+           data-cover="assets/echobox-cover.jpg">
         <div class="proj-thumb"></div>
         <div class="proj-info">
           <div class="proj-num">09</div>
@@ -1810,8 +1826,8 @@
           <div class="proj-title" data-zh="MACA-ON — 澳门文化遗产数字研学平台" data-en="MACA-ON — Macau Heritage Digital Study-Tour Platform"></div>
           <div class="proj-role" data-zh="设计师 · 联合创始人" data-en="Designer · Co-founder"></div>
           <div class="proj-desc"
-            data-zh="面向澳门文化遗产研学的互动学习平台，以「不止于游览，而是一场共享的学习冒险」为理念，融合定位探索、任务式学习与 AI 反思。学生通过拍照打卡、找不同、问答等实地任务深入认识大三巴、澳门博物馆、大炮台等历史地标；教师端可实时监控学生位置、追踪学习进度、即时沟通与一键集合，打造「教育 + 科技 + 文旅」融合的沉浸式研学体验。香港理工大学硕士毕业设计项目。"
-            data-en="An interactive learning platform for Macau heritage study tours — 'more than a tour, a shared learning adventure.' It blends location-based exploration, task-based learning (photo missions, spot-the-difference, Q&A) and AI-powered reflection, guiding students through landmarks such as the Ruins of St. Paul's, Macau Museum and Monte Fort. A teacher dashboard enables live location monitoring, progress tracking, messaging and one-tap group assembly — an immersive fusion of education, technology and cultural tourism. PolyU MSc graduation project."></div>
+            data-zh="面向澳门文化遗产研学的互动学习平台，以「不止于游览，而是一场共享的学习冒险」为理念，融合定位探索、任务式学习与 AI 反思。学生通过拍照打卡、找不同、问答等实地任务深入认识大三巴、澳门博物馆、大炮台等历史地标；教师端可实时监控学生位置、追踪学习进度、即时沟通与一键集合，打造「教育 + 科技 + 文旅」融合的沉浸式研学体验。"
+            data-en="An interactive learning platform for Macau heritage study tours — 'more than a tour, a shared learning adventure.' It blends location-based exploration, task-based learning (photo missions, spot-the-difference, Q&A) and AI-powered reflection, guiding students through landmarks such as the Ruins of St. Paul's, Macau Museum and Monte Fort. A teacher dashboard enables live location monitoring, progress tracking, messaging and one-tap group assembly — an immersive fusion of education, technology and cultural tourism."></div>
           <div class="proj-foot">
             <span class="proj-date">2026</span>
             <span class="pf-hint" data-zh="查看项目计划书 ↗" data-en="View Project Plan ↗"></span>
@@ -1865,7 +1881,8 @@
 
     </div>
 
-    <!-- Publication -->
+    <!-- Publications — side by side -->
+    <div class="pub-grid">
     <div class="pub-card reveal">
       <div>
         <div class="pub-eyebrow">
@@ -1907,6 +1924,7 @@
             data-en="Tokyo · Toei Eiryaki Vol. I"></div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -2110,7 +2128,7 @@
     },
     olympic: {
       path: 'assets/proj/olympic/',
-      files: ['DSC04873.jpg'],
+      files: ['DSC04873.jpg','olympic-video.mp4'],
       titleZh: '中国国家奥运健儿访澳系列活动',
       titleEn: 'Chinese Olympic Athletes Visit Macau',
       roleZh: '采编助理',
@@ -2142,7 +2160,7 @@
     },
     filmfest14: {
       path: 'assets/proj/filmfest14/',
-      files: ['IMG_6386.jpg','IMG_6379.jpg','IMG_6381.jpg','IMG_6398.jpg'],
+      files: ['IMG_6384.jpg','IMG_6386.jpg','IMG_6379.jpg','IMG_6381.jpg','IMG_6398.jpg'],
       titleZh: '第14届澳门国际电影节',
       titleEn: '14th Macau International Film Festival',
       roleZh: '摄影助理',
