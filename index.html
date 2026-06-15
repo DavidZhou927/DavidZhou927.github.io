@@ -994,6 +994,31 @@
       transform: scale(1.04);
       filter: brightness(1);
     }
+    .pf-img video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(.82);
+    }
+    .pf-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(15,24,40,.55);
+      border: 1px solid rgba(255,255,255,.65);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      padding-left: 3px;
+      pointer-events: none;
+      transition: background .3s, transform .3s var(--ease-out);
+    }
+    .pf-vid:hover .pf-play {
+      background: var(--gold);
+      transform: translate(-50%, -50%) scale(1.08);
+    }
 
     .pf-footer {
       padding: 1rem clamp(1.5rem, 5vw, 5.5rem);
@@ -1636,8 +1661,8 @@
         </div>
       </article>
 
-      <!-- 02 香港国际高峰文化论坛 — no work -->
-      <article class="proj-row reveal">
+      <!-- 02 香港国际高峰文化论坛 — gallery + video -->
+      <article class="proj-row reveal has-work" data-portfolio-key="hkforum">
         <div class="proj-thumb"></div>
         <div class="proj-info">
           <div class="proj-num">02</div>
@@ -1648,6 +1673,7 @@
             data-en="Responsible for media content planning and production, enhancing digital communication and brand impact through in-depth reporting and visual imagery."></div>
           <div class="proj-foot">
             <span class="proj-date">2026.03</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
           </div>
         </div>
       </article>
@@ -1769,6 +1795,26 @@
           <div class="proj-foot">
             <span class="proj-date">2025</span>
             <span class="pf-hint" data-zh="查看商业计划书 ↗" data-en="View Business Plan ↗"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 10 MACA-ON — graduation project, plan PDF -->
+      <article class="proj-row reveal has-work"
+           data-portfolio-type="link"
+           data-portfolio-href="assets/maca-on-plan.pdf"
+           data-cover="assets/maca-on-cover.jpg">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">10</div>
+          <div class="proj-title" data-zh="MACA-ON — 澳门文化遗产数字研学平台" data-en="MACA-ON — Macau Heritage Digital Study-Tour Platform"></div>
+          <div class="proj-role" data-zh="设计师 · 联合创始人" data-en="Designer · Co-founder"></div>
+          <div class="proj-desc"
+            data-zh="面向澳门文化遗产研学的互动学习平台，以「不止于游览，而是一场共享的学习冒险」为理念，融合定位探索、任务式学习与 AI 反思。学生通过拍照打卡、找不同、问答等实地任务深入认识大三巴、澳门博物馆、大炮台等历史地标；教师端可实时监控学生位置、追踪学习进度、即时沟通与一键集合，打造「教育 + 科技 + 文旅」融合的沉浸式研学体验。香港理工大学硕士毕业设计项目。"
+            data-en="An interactive learning platform for Macau heritage study tours — 'more than a tour, a shared learning adventure.' It blends location-based exploration, task-based learning (photo missions, spot-the-difference, Q&A) and AI-powered reflection, guiding students through landmarks such as the Ruins of St. Paul's, Macau Museum and Monte Fort. A teacher dashboard enables live location monitoring, progress tracking, messaging and one-tap group assembly — an immersive fusion of education, technology and cultural tourism. PolyU MSc graduation project."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2026</span>
+            <span class="pf-hint" data-zh="查看项目计划书 ↗" data-en="View Project Plan ↗"></span>
           </div>
         </div>
       </article>
@@ -2080,7 +2126,7 @@
     },
     expo13: {
       path: 'assets/proj/expo13/',
-      files: ['673611823851d855c8d43b1ace6c597d.jpg','9f83b5e8ccb0302229e24945576c6a9d.jpg','IMG_7946.jpg'],
+      files: ['IMG_7946.jpg','673611823851d855c8d43b1ace6c597d.jpg','9f83b5e8ccb0302229e24945576c6a9d.jpg'],
       titleZh: '第13届澳门国际旅游博览会',
       titleEn: '13th Macau International Tourism Expo',
       roleZh: '参展商 · 协助策展',
@@ -2096,7 +2142,7 @@
     },
     filmfest14: {
       path: 'assets/proj/filmfest14/',
-      files: ['IMG_6379.jpg','IMG_6381.jpg','IMG_6386.jpg','IMG_6398.jpg'],
+      files: ['IMG_6386.jpg','IMG_6379.jpg','IMG_6381.jpg','IMG_6398.jpg'],
       titleZh: '第14届澳门国际电影节',
       titleEn: '14th Macau International Film Festival',
       roleZh: '摄影助理',
@@ -2110,6 +2156,14 @@
       titleEn: 'CCTV Science & Education · Geography China',
       roleZh: '摄像助理',
       roleEn: 'Camera Assistant'
+    },
+    hkforum: {
+      path: 'assets/proj/hkforum/',
+      files: ['DSC00417.jpg','forum-news.mp4','forum-sands.mp4'],
+      titleZh: '香港国际高峰文化论坛',
+      titleEn: 'Hong Kong International Summit Cultural Forum',
+      roleZh: '传媒记者',
+      roleEn: 'Media Reporter'
     }
   };
 
@@ -2227,11 +2281,25 @@
     data.files.forEach((file, i) => {
       const wrap = document.createElement('div');
       wrap.className = 'pf-img';
-      const img = document.createElement('img');
-      img.src = data.path + encodeURIComponent(file);
-      img.alt = title + ' ' + (i + 1);
-      img.loading = 'lazy';
-      wrap.appendChild(img);
+      if (isVideo(file)) {
+        wrap.classList.add('pf-vid');
+        const vid = document.createElement('video');
+        vid.src = data.path + encodeURIComponent(file);
+        vid.muted = true;
+        vid.playsInline = true;
+        vid.preload = 'metadata';
+        wrap.appendChild(vid);
+        const badge = document.createElement('span');
+        badge.className = 'pf-play';
+        badge.innerHTML = '&#9658;';
+        wrap.appendChild(badge);
+      } else {
+        const img = document.createElement('img');
+        img.src = data.path + encodeURIComponent(file);
+        img.alt = title + ' ' + (i + 1);
+        img.loading = 'lazy';
+        wrap.appendChild(img);
+      }
       pfGrid.appendChild(wrap);
       wrap.addEventListener('click', () => openLightbox(key, i));
     });
@@ -2280,12 +2348,20 @@
   });
 
   /* ── Project row thumbnails + clicks ── */
+  const isVideo = (f) => /\.(mov|mp4|webm)$/i.test(f);
   document.querySelectorAll('.proj-row').forEach(row => {
     const thumb = row.querySelector('.proj-thumb');
     const key = row.dataset.portfolioKey;
-    if (key && pfData[key]) {
+    let thumbSrc = null;
+    if (row.dataset.cover) {
+      thumbSrc = row.dataset.cover;
+    } else if (key && pfData[key]) {
+      const firstImg = pfData[key].files.find(f => !isVideo(f)) || pfData[key].files[0];
+      thumbSrc = pfData[key].path + encodeURIComponent(firstImg);
+    }
+    if (thumbSrc) {
       const img = document.createElement('img');
-      img.src = pfData[key].path + encodeURIComponent(pfData[key].files[0]);
+      img.src = thumbSrc;
       img.alt = '';
       img.loading = 'lazy';
       thumb.appendChild(img);
@@ -2325,16 +2401,39 @@
     lbOverlay.classList.add('open');
   }
 
+  const lbVideo = document.createElement('video');
+  lbVideo.id = 'lbVideo';
+  lbVideo.controls = true;
+  lbVideo.playsInline = true;
+  lbVideo.style.cssText = 'max-width:90vw;max-height:90vh;display:none;border-radius:var(--r-sm);';
+  lbImg.parentNode.appendChild(lbVideo);
+
   function showLbImage() {
     const data = pfData[lbKey];
-    lbImg.src  = data.path + encodeURIComponent(data.files[lbIdx]);
-    lbImg.alt  = 'Image ' + (lbIdx + 1);
+    const file = data.files[lbIdx];
+    const src  = data.path + encodeURIComponent(file);
+    if (isVideo(file)) {
+      lbImg.style.display = 'none';
+      lbVideo.style.display = '';
+      lbVideo.src = src;
+      lbVideo.play().catch(() => {});
+    } else {
+      lbVideo.pause();
+      lbVideo.removeAttribute('src');
+      lbVideo.style.display = 'none';
+      lbImg.style.display = '';
+      lbImg.src = src;
+      lbImg.alt = 'Image ' + (lbIdx + 1);
+    }
     lbCounter.textContent = (lbIdx + 1) + ' / ' + data.files.length;
     lbPrev.style.display = data.files.length > 1 ? '' : 'none';
     lbNext.style.display = data.files.length > 1 ? '' : 'none';
   }
 
-  function closeLightbox() { lbOverlay.classList.remove('open'); }
+  function closeLightbox() {
+    lbOverlay.classList.remove('open');
+    lbVideo.pause();
+  }
 
   lbClose.addEventListener('click', closeLightbox);
   lbOverlay.addEventListener('click', (e) => { if (e.target === lbOverlay) closeLightbox(); });
