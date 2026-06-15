@@ -488,63 +488,107 @@
       transition: opacity .35s var(--ease-out), transform .35s var(--ease-out);
       font-family: var(--f-en);
     }
+    .proj-foot .pf-hint {
+      position: static;
+      bottom: auto; right: auto;
+    }
+    .proj-row.has-work:hover .pf-hint {
+      opacity: 1;
+      transform: none;
+    }
     .exp-item.has-portfolio:hover .pf-hint {
       opacity: 1;
       transform: none;
     }
 
-    /* ─── PROJECTS ───────────────────────────────────────────── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      background: transparent;
+    /* ─── PROJECTS (editorial alternating rows) ──────────────── */
+    .proj-list {
+      display: flex;
+      flex-direction: column;
       border-top: 1px solid var(--border);
-      border-left: 1px solid var(--border);
     }
-    .proj-card {
-      background: transparent;
-      padding: 2.4rem;
-      cursor: default;
-      transition: background .3s;
-      position: relative;
-      border-right: 1px solid var(--border);
+    .proj-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: center;
+      padding: clamp(2.4rem, 4.5vw, 4rem) 0;
       border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .proj-row.has-work { cursor: pointer; }
+    /* alternate image side on even rows */
+    .proj-row:nth-child(even) .proj-thumb { order: 2; }
+    .proj-row:nth-child(even) .proj-info  { order: 1; }
+
+    .proj-thumb {
+      height: clamp(210px, 26vw, 330px);
       overflow: hidden;
+      background: var(--bg2);
+      position: relative;
     }
-    .proj-card.has-work {
-      cursor: pointer;
+    .proj-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(.9);
+      transition: transform .7s var(--ease-out), filter .4s;
     }
-    .proj-card.has-work:hover { background: var(--bg3); }
-    .proj-card.has-work:hover .pf-hint { opacity: 1; transform: none; }
+    .proj-row.has-work:hover .proj-thumb img {
+      transform: scale(1.05);
+      filter: brightness(1.02);
+    }
+    .proj-thumb--empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .proj-thumb--empty span {
+      font-family: var(--f-en);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(214,184,133,.22);
+      line-height: 1;
+    }
+
     .proj-num {
       font-size: .62rem;
       color: var(--faint);
       letter-spacing: .2em;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
     }
     .proj-title {
-      font-size: 1.15rem;
-      font-weight: 300;
+      font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+      font-weight: 400;
       color: var(--white);
-      line-height: 1.35;
-      margin-bottom: .7rem;
+      line-height: 1.28;
+      margin-bottom: .9rem;
+      transition: color .3s;
     }
+    .proj-row.has-work:hover .proj-title { color: var(--gold2); }
     .proj-role {
-      font-size: .72rem;
+      font-size: .74rem;
       color: var(--gold);
       letter-spacing: .1em;
-      margin-bottom: .9rem;
+      margin-bottom: 1.1rem;
     }
     .proj-desc {
-      font-size: .85rem;
+      font-size: .9rem;
       color: var(--dim);
-      line-height: 1.75;
+      line-height: 1.85;
+      max-width: 38ch;
+    }
+    .proj-foot {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      margin-top: 1.6rem;
     }
     .proj-date {
       font-size: .68rem;
       color: var(--faint);
-      margin-top: 1.4rem;
       letter-spacing: .06em;
     }
     .pf-header-actions { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
@@ -1084,7 +1128,9 @@
       .about-grid    { grid-template-columns: 1fr; gap: 3.5rem; }
       .contact-grid  { grid-template-columns: 1fr; gap: 3rem; }
       .pub-card      { grid-template-columns: 1fr; gap: 2rem; }
-      .projects-grid { grid-template-columns: 1fr 1fr; }
+      .proj-row      { grid-template-columns: 1fr; gap: 1.4rem; }
+      .proj-row .proj-thumb { order: 0 !important; height: clamp(200px, 52vw, 300px); }
+      .proj-row .proj-info  { order: 1 !important; }
       .skills-grid   { grid-template-columns: 1fr 1fr; }
       .exp-item      { grid-template-columns: 1fr; gap: .8rem; }
       .edu-item      { grid-template-columns: 1fr; gap: .8rem; }
@@ -1166,7 +1212,7 @@
     }
     @media (hover: hover) and (pointer: fine) {
       body { cursor: none; }
-      a, button, .proj-card.has-work, .exp-item.has-portfolio,
+      a, button, .proj-row.has-work, .exp-item.has-portfolio,
       .pf-img, .social-item, .lang-btn, .burger { cursor: none; }
       .cursor-dot, .cursor-ring { display: block; }
     }
@@ -1268,17 +1314,17 @@
     .proj-card.has-work:hover::before { transform: scaleX(1); }
 
     /* ── Card slide-in (staggered) ── */
-    .projects-grid .reveal {
-      transform: translateY(42px);
+    .proj-row.reveal {
+      transform: translateY(48px);
       filter: none;
-      transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+      transition: opacity .85s var(--ease-out), transform .85s var(--ease-out);
     }
+    .proj-row.reveal.in { transform: none; }
     .skills-grid .reveal {
       transform: translateY(50px) scale(.97);
       filter: none;
       transition: opacity .85s var(--ease-out), transform .85s var(--ease-out);
     }
-    .projects-grid .reveal.in,
     .skills-grid .reveal.in { transform: none; }
     .pub-card.reveal {
       transform: translateY(52px);
@@ -1287,7 +1333,7 @@
     }
     .pub-card.reveal.in { transform: none; }
     @media (prefers-reduced-motion: reduce) {
-      .projects-grid .reveal,
+      .proj-row.reveal,
       .skills-grid .reveal,
       .pub-card.reveal { transform: none; }
     }
@@ -1571,116 +1617,161 @@
       <h2 class="sec-title" data-zh="项目经历" data-en="Selected Projects"></h2>
     </div>
 
-    <div class="projects-grid">
+    <div class="proj-list">
 
       <!-- 01 澳门国际幻彩大巡游 — has work -->
-      <div class="proj-card reveal has-work" data-portfolio-key="parade">
-        <div class="proj-num">01</div>
-        <div class="proj-title" data-zh="澳门国际幻彩大巡游" data-en="Macau International Fantasy Grand Parade"></div>
-        <div class="proj-role" data-zh="摄影师" data-en="Photographer"></div>
-        <div class="proj-desc"
-          data-zh="通过创新拍摄视角重塑传统民俗场景，策划「视觉+活动」融合传播方案，参与 2024、2025 两届。"
-          data-en="Reshaped traditional folk scenes through innovative perspectives and led visual+event integrated communication for the 2024 and 2025 editions."></div>
-        <div class="proj-date">2024 — 2025</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="parade">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">01</div>
+          <div class="proj-title" data-zh="澳门国际幻彩大巡游" data-en="Macau International Fantasy Grand Parade"></div>
+          <div class="proj-role" data-zh="摄影师" data-en="Photographer"></div>
+          <div class="proj-desc"
+            data-zh="通过创新拍摄视角重塑传统民俗场景，策划「视觉+活动」融合传播方案，参与 2024、2025 两届。"
+            data-en="Reshaped traditional folk scenes through innovative perspectives and led visual+event integrated communication for the 2024 and 2025 editions."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2024 — 2025</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 02 香港国际高峰文化论坛 — no work -->
-      <div class="proj-card reveal">
-        <div class="proj-num">02</div>
-        <div class="proj-title" data-zh="香港国际高峰文化论坛" data-en="Hong Kong International Summit Cultural Forum"></div>
-        <div class="proj-role" data-zh="传媒记者" data-en="Media Reporter"></div>
-        <div class="proj-desc"
-          data-zh="负责媒体内容策划与产出，通过深度新闻报道与视觉影像创作全方位提升活动数字化传播与品牌影响力。"
-          data-en="Responsible for media content planning and production, enhancing digital communication and brand impact through in-depth reporting and visual imagery."></div>
-        <div class="proj-date">2026.03</div>
-      </div>
+      <article class="proj-row reveal">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">02</div>
+          <div class="proj-title" data-zh="香港国际高峰文化论坛" data-en="Hong Kong International Summit Cultural Forum"></div>
+          <div class="proj-role" data-zh="传媒记者" data-en="Media Reporter"></div>
+          <div class="proj-desc"
+            data-zh="负责媒体内容策划与产出，通过深度新闻报道与视觉影像创作全方位提升活动数字化传播与品牌影响力。"
+            data-en="Responsible for media content planning and production, enhancing digital communication and brand impact through in-depth reporting and visual imagery."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2026.03</span>
+          </div>
+        </div>
+      </article>
 
       <!-- 03 中国国家奥运健儿访澳 — has work -->
-      <div class="proj-card reveal has-work" data-portfolio-key="olympic">
-        <div class="proj-num">03</div>
-        <div class="proj-title" data-zh="中国国家奥运健儿访澳系列活动" data-en="Chinese Olympic Athletes Visit Macau"></div>
-        <div class="proj-role" data-zh="采编助理" data-en="Content Editor Assistant"></div>
-        <div class="proj-desc"
-          data-zh="紧跟「体育+旅游」融合趋势，协助制定传播脚本并优化现场拍摄路径，确保文旅内容精准触达核心受众。"
-          data-en="Aligned with sports+tourism fusion trends, assisted in developing communication scripts and optimising on-site shooting paths for targeted audience reach."></div>
-        <div class="proj-date">2024.10</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="olympic">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">03</div>
+          <div class="proj-title" data-zh="中国国家奥运健儿访澳系列活动" data-en="Chinese Olympic Athletes Visit Macau"></div>
+          <div class="proj-role" data-zh="采编助理" data-en="Content Editor Assistant"></div>
+          <div class="proj-desc"
+            data-zh="紧跟「体育+旅游」融合趋势，协助制定传播脚本并优化现场拍摄路径，确保文旅内容精准触达核心受众。"
+            data-en="Aligned with sports+tourism fusion trends, assisted in developing communication scripts and optimising on-site shooting paths for targeted audience reach."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2024.10</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 04 品冠演唱会 — has work -->
-      <div class="proj-card reveal has-work" data-portfolio-key="concert">
-        <div class="proj-num">04</div>
-        <div class="proj-title" data-zh="品冠「不如我们今天见」巡回演唱会·澳门站" data-en="Pin Guan Concert Tour · Macau Station"></div>
-        <div class="proj-role" data-zh="艺人侧拍师" data-en="Artist Photographer"></div>
-        <div class="proj-desc"
-          data-zh="拍摄彩排花絮、演出照片及艺人侧拍，对接演唱会活动全流程，确保演出顺利举行。"
-          data-en="Captured rehearsal behind-the-scenes, performance shots, and artist candids. Coordinated with concert logistics to ensure smooth execution."></div>
-        <div class="proj-date">2024.09</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="concert">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">04</div>
+          <div class="proj-title" data-zh="品冠「不如我们今天见」巡回演唱会·澳门站" data-en="Pin Guan Concert Tour · Macau Station"></div>
+          <div class="proj-role" data-zh="艺人侧拍师" data-en="Artist Photographer"></div>
+          <div class="proj-desc"
+            data-zh="拍摄彩排花絮、演出照片及艺人侧拍，对接演唱会活动全流程，确保演出顺利举行。"
+            data-en="Captured rehearsal behind-the-scenes, performance shots, and artist candids. Coordinated with concert logistics to ensure smooth execution."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2024.09</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 05 第13届澳门国际旅游博览会 — has work -->
-      <div class="proj-card reveal has-work" data-portfolio-key="expo13">
-        <div class="proj-num">05</div>
-        <div class="proj-title" data-zh="第 13 届澳门国际旅游博览会" data-en="13th Macau International Tourism Expo"></div>
-        <div class="proj-role" data-zh="参展商 · 协助策展" data-en="Exhibitor · Exhibition Assistant"></div>
-        <div class="proj-desc"
-          data-zh="以《澳门映画》摄影集展示文旅融合新案例，协助澳门研学发展协会进行深度商业配对，辅助达成多项合作意向。"
-          data-en="Showcased photography book as a cultural-tourism integration case. Assisted Macau Study Tour Development Association in commercial matchmaking, facilitating multiple cooperation agreements."></div>
-        <div class="proj-date">2025.04</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="expo13">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">05</div>
+          <div class="proj-title" data-zh="第 13 届澳门国际旅游博览会" data-en="13th Macau International Tourism Expo"></div>
+          <div class="proj-role" data-zh="参展商 · 协助策展" data-en="Exhibitor · Exhibition Assistant"></div>
+          <div class="proj-desc"
+            data-zh="以《澳门映画》摄影集展示文旅融合新案例，协助澳门研学发展协会进行深度商业配对，辅助达成多项合作意向。"
+            data-en="Showcased photography book as a cultural-tourism integration case. Assisted Macau Study Tour Development Association in commercial matchmaking, facilitating multiple cooperation agreements."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2025.04</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 06 莲花艺术空间 — has work -->
-      <div class="proj-card reveal has-work" data-portfolio-key="lotusart">
-        <div class="proj-num">06</div>
-        <div class="proj-title" data-zh="莲花艺术空间" data-en="Lotus Art Space"></div>
-        <div class="proj-role" data-zh="协助策展" data-en="Exhibition Curator Assistant"></div>
-        <div class="proj-desc"
-          data-zh="探索「艺术+旅游」业态融合，协助布展并策划开幕互动环节，提升线下文旅空间的沉浸感与品牌附加值。"
-          data-en="Explored art+tourism business integration, assisted in exhibition setup and planned interactive opening sessions to enhance immersive cultural experience."></div>
-        <div class="proj-date">2025.03</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="lotusart">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">06</div>
+          <div class="proj-title" data-zh="莲花艺术空间" data-en="Lotus Art Space"></div>
+          <div class="proj-role" data-zh="协助策展" data-en="Exhibition Curator Assistant"></div>
+          <div class="proj-desc"
+            data-zh="探索「艺术+旅游」业态融合，协助布展并策划开幕互动环节，提升线下文旅空间的沉浸感与品牌附加值。"
+            data-en="Explored art+tourism business integration, assisted in exhibition setup and planned interactive opening sessions to enhance immersive cultural experience."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2025.03</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 07 第14届澳门国际电影节 — has work -->
-      <div class="proj-card reveal has-work" data-portfolio-key="filmfest14">
-        <div class="proj-num">07</div>
-        <div class="proj-title" data-zh="第 14 届澳门国际电影节" data-en="14th Macau International Film Festival"></div>
-        <div class="proj-role" data-zh="摄影助理" data-en="Photography Assistant"></div>
-        <div class="proj-desc"
-          data-zh="协助拍摄红毯及活动全程，在跨部门协作中展现出色的现场应变与执行能力。"
-          data-en="Assisted in red carpet and event photography, demonstrating strong cross-department collaboration and composure under pressure."></div>
-        <div class="proj-date">2022.12</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="filmfest14">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">07</div>
+          <div class="proj-title" data-zh="第 14 届澳门国际电影节" data-en="14th Macau International Film Festival"></div>
+          <div class="proj-role" data-zh="摄影助理" data-en="Photography Assistant"></div>
+          <div class="proj-desc"
+            data-zh="协助拍摄红毯及活动全程，在跨部门协作中展现出色的现场应变与执行能力。"
+            data-en="Assisted in red carpet and event photography, demonstrating strong cross-department collaboration and composure under pressure."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2022.12</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 08 央视科教频道 — has work + video link -->
-      <div class="proj-card reveal has-work" data-portfolio-key="cctv">
-        <div class="proj-num">08</div>
-        <div class="proj-title" data-zh="央视科教频道《地理·中国》" data-en="CCTV Science & Education · Geography China"></div>
-        <div class="proj-role" data-zh="摄像助理" data-en="Camera Assistant"></div>
-        <div class="proj-desc"
-          data-zh="参与《奇特古城之谜·火山石城3》节目摄制，深入积累专业纪录片制作经验。"
-          data-en="Participated in 'Mystery of Ancient Cities · Volcanic Stone City 3', gaining hands-on professional documentary filmmaking experience."></div>
-        <div class="proj-date">2024.02</div>
-        <div class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></div>
-      </div>
+      <article class="proj-row reveal has-work" data-portfolio-key="cctv">
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">08</div>
+          <div class="proj-title" data-zh="央视科教频道《地理·中国》" data-en="CCTV Science & Education · Geography China"></div>
+          <div class="proj-role" data-zh="摄像助理" data-en="Camera Assistant"></div>
+          <div class="proj-desc"
+            data-zh="参与《奇特古城之谜·火山石城3》节目摄制，深入积累专业纪录片制作经验。"
+            data-en="Participated in 'Mystery of Ancient Cities · Volcanic Stone City 3', gaining hands-on professional documentary filmmaking experience."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2024.02</span>
+            <span class="pf-hint" data-zh="查看作品集 →" data-en="View Portfolio →"></span>
+          </div>
+        </div>
+      </article>
 
       <!-- 09 Echobox — business plan PDF -->
-      <div class="proj-card reveal has-work"
+      <article class="proj-row reveal has-work"
            data-portfolio-type="link"
            data-portfolio-href="assets/echobox-business-plan.pdf">
-        <div class="proj-num">09</div>
-        <div class="proj-title" data-zh="Echobox — 跨代际智能沟通平台" data-en="Echobox — Cross-generational AI Chat Platform"></div>
-        <div class="proj-role" data-zh="设计师 · 联合创始人" data-en="Designer · Co-founder"></div>
-        <div class="proj-desc"
-          data-zh="一款 AI 驱动的智能聊天软件，帮助年轻人与长辈跨越代沟、建立更顺畅的情感连接与沟通桥梁。入围香港理工大学 2025 年微型基金第一期最佳表现奖，获创业奖金 2 万港元，并进入香港科技园ideation计划。"
-          data-en="An AI-powered intelligent chat platform designed to bridge the generation gap between young people and elders, fostering smoother emotional connection and communication across generations. Shortlisted for PolyU 2025 Micro Fund Best Performance Award with HKD 20,000 prize, and entering the ideation program of Hong Kong Science and Technology Park."></div>
-        <div class="proj-date">2025</div>
-        <div class="pf-hint" data-zh="查看商业计划书 ↗" data-en="View Business Plan ↗"></div>
-      </div>
+        <div class="proj-thumb"></div>
+        <div class="proj-info">
+          <div class="proj-num">09</div>
+          <div class="proj-title" data-zh="Echobox — 跨代际智能沟通平台" data-en="Echobox — Cross-generational AI Chat Platform"></div>
+          <div class="proj-role" data-zh="设计师 · 联合创始人" data-en="Designer · Co-founder"></div>
+          <div class="proj-desc"
+            data-zh="一款 AI 驱动的智能聊天软件，帮助年轻人与长辈跨越代沟、建立更顺畅的情感连接与沟通桥梁。入围香港理工大学 2025 年微型基金第一期最佳表现奖，获创业奖金 2 万港元，并进入香港科技园ideation计划。"
+            data-en="An AI-powered intelligent chat platform designed to bridge the generation gap between young people and elders, fostering smoother emotional connection and communication across generations. Shortlisted for PolyU 2025 Micro Fund Best Performance Award with HKD 20,000 prize, and entering the ideation program of Hong Kong Science and Technology Park."></div>
+          <div class="proj-foot">
+            <span class="proj-date">2025</span>
+            <span class="pf-hint" data-zh="查看商业计划书 ↗" data-en="View Business Plan ↗"></span>
+          </div>
+        </div>
+      </article>
 
     </div>
   </div>
@@ -2188,16 +2279,32 @@
     });
   });
 
-  /* ── Project card clicks ── */
-  document.querySelectorAll('.proj-card.has-work').forEach(card => {
-    card.addEventListener('click', (e) => {
-      const type = card.dataset.portfolioType;
-      if (type === 'link') {
-        window.open(card.dataset.portfolioHref, '_blank', 'noopener,noreferrer');
-      } else if (card.dataset.portfolioKey) {
-        openPortfolio(card.dataset.portfolioKey);
-      }
-    });
+  /* ── Project row thumbnails + clicks ── */
+  document.querySelectorAll('.proj-row').forEach(row => {
+    const thumb = row.querySelector('.proj-thumb');
+    const key = row.dataset.portfolioKey;
+    if (key && pfData[key]) {
+      const img = document.createElement('img');
+      img.src = pfData[key].path + encodeURIComponent(pfData[key].files[0]);
+      img.alt = '';
+      img.loading = 'lazy';
+      thumb.appendChild(img);
+    } else {
+      thumb.classList.add('proj-thumb--empty');
+      const span = document.createElement('span');
+      span.textContent = (row.querySelector('.proj-num') || {}).textContent || '';
+      span.setAttribute('aria-hidden', 'true');
+      thumb.appendChild(span);
+    }
+    if (row.classList.contains('has-work')) {
+      row.addEventListener('click', () => {
+        if (row.dataset.portfolioType === 'link') {
+          window.open(row.dataset.portfolioHref, '_blank', 'noopener,noreferrer');
+        } else if (row.dataset.portfolioKey) {
+          openPortfolio(row.dataset.portfolioKey);
+        }
+      });
+    }
   });
 
   /* ── Lightbox ── */
@@ -2286,7 +2393,7 @@
       requestAnimationFrame(ringLoop);
     })();
 
-    document.querySelectorAll('a, button, .proj-card.has-work, .exp-item.has-portfolio, .pf-img, .social-item, .lang-btn, .burger')
+    document.querySelectorAll('a, button, .proj-row.has-work, .exp-item.has-portfolio, .pf-img, .social-item, .lang-btn, .burger')
       .forEach(el => {
         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
         el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -2313,8 +2420,6 @@
       });
     };
 
-    document.querySelectorAll('.proj-card.has-work[data-portfolio-key]')
-      .forEach(c => bindPreview(c, c.dataset.portfolioKey));
     document.querySelectorAll('.exp-item.has-portfolio[data-portfolio-type="gallery"]')
       .forEach(it => bindPreview(it, it.dataset.portfolioKey));
 
